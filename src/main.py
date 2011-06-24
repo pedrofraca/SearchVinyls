@@ -1,4 +1,4 @@
-from Search import Search
+from Search import create_search_term
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from itemsearcher import itemsearcher
@@ -25,14 +25,21 @@ class MainPage(webapp.RequestHandler):
                 </center>
             </body>
           </html>""")
+
 class Searcher(webapp.RequestHandler):
     def post(self):
         toSearch=self.request.get('content')
-        toSearch = toSearch.encode('utf-8')
-        searchTerm = Search(searchterm=toSearch)
-        searchTerm.create()
-        items = itemsearcher().search_items_by_string(toSearch)
-        self.response.out.write('<html> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <body><h2>Your search about %s has returned %s items :</h2><pre>' % (unicode(toSearch,'utf-8'),str(len(items))))
+        toSearch = toSearch.encode('utf-8')        
+        create_search_term(toSearch)
+        if self.verify(toSearch):
+            items = itemsearcher().search_items_by_string(toSearch)
+            self.printResults(items, toSearch)
+        else:
+            self.redirect('/')
+
+    def printResults(self,items,searchTerm):
+        self.response.out.write('<html> <head><title>Search: %s (%s) </title></head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <body><h2>Your search about %s has returned %s items :</h2><pre>'
+        % (unicode(searchTerm,'utf-8'),str(len(items)),unicode(searchTerm,'utf-8'),str(len(items))))
         counter=1
         for item in items:
                 self.response.out.write('<div>')
@@ -47,6 +54,10 @@ class Searcher(webapp.RequestHandler):
                 counter=counter + 1
 
         self.response.out.write('</pre></body></html>')
+    def verify(self,searchTerm):
+        if searchTerm.strip()=='':
+            return False
+        return True
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
