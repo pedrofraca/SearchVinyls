@@ -7,6 +7,7 @@ class MainPage(webapp.RequestHandler):
     def get(self):
         self.response.out.write("""
           <html>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
             <head>
                 <TITLE>Search for Vinyls</TITLE>
                 <script type="text/javascript">
@@ -24,15 +25,14 @@ class MainPage(webapp.RequestHandler):
                 </center>
             </body>
           </html>""")
-
-
 class Searcher(webapp.RequestHandler):
     def post(self):
         toSearch=self.request.get('content')
+        toSearch = toSearch.encode('utf-8')
         searchTerm = Search(searchterm=toSearch)
         searchTerm.create()
         items = itemsearcher().search_items_by_string(toSearch)
-        self.response.out.write('<html><body><h2>Your search about '+ toSearch +' has returned '+ str(len(items)) +' items :</h2><pre>')
+        self.response.out.write('<html> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <body><h2>Your search about %s has returned %s items :</h2><pre>' % (unicode(toSearch,'utf-8'),str(len(items))))
         counter=1
         for item in items:
                 self.response.out.write('<div>')

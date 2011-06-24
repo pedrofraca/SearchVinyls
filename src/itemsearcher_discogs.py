@@ -5,6 +5,7 @@ import urllib
 import BeautifulSoup
 from BeautifulSoup import BeautifulSoup
 from item import Item
+
           # For processing HTML
 
 
@@ -47,11 +48,11 @@ def get_items(string_to_search):
         if titleSpan:
             #image = cols[0].find('img')
             #newItem.image = image
-            newItem.tittle = unicode(titleSpan.a.string)
+            newItem.tittle = titleSpan.a.string
             newItem.fromPage="Discogs"
             priceSpan = cols[4].find('span',{'class':'price'})
             if priceSpan:
-                newItem.price=unicode(priceSpan.string)
+                newItem.price=priceSpan.string
             list.append(newItem)
 
     return list
