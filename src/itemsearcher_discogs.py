@@ -44,11 +44,13 @@ def get_items(string_to_search):
     for theItem in rows:
         cols = theItem.findAll('td',recursive=False)
         newItem = Item()
+        image = cols[0].find('img')
+        if image:
+            newItem.image=(image['src'])
         titleSpan = cols[1].find('span',{'class':'br_item_title'})
         if titleSpan:
-            #image = cols[0].find('img')
-            #newItem.image = image
             newItem.tittle = titleSpan.a.string
+            newItem.linkToItem='http://www.discogs.com'+titleSpan.a['href']
             newItem.fromPage="Discogs"
             priceSpan = cols[4].find('span',{'class':'price'})
             if priceSpan:

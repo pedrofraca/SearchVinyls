@@ -28,29 +28,39 @@ class MainPage(webapp.RequestHandler):
 
 class Searcher(webapp.RequestHandler):
     def post(self):
-        toSearch=self.request.get('content')
-        toSearch = toSearch.encode('utf-8')        
-        create_search_term(toSearch)
-        if self.verify(toSearch):
-            items = itemsearcher().search_items_by_string(toSearch)
-            self.printResults(items, toSearch)
+        term_to_search=self.request.get('content')
+        term_to_search = term_to_search.encode('utf-8')
+        if self.verify(term_to_search):
+            create_search_term(term_to_search)
+            items = itemsearcher().search_items_by_string(term_to_search)
+            self.print_results(items, term_to_search)
         else:
             self.redirect('/')
 
-    def printResults(self,items,searchTerm):
-        self.response.out.write('<html> <head><title>Search: %s (%s) </title></head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <body><h2>Your search about %s has returned %s items :</h2><pre>'
-        % (unicode(searchTerm,'utf-8'),str(len(items)),unicode(searchTerm,'utf-8'),str(len(items))))
+    def print_results(self,items,searchTerm):
+        self.response.out.write('<html  style="background-color:#FFFFFF"> <head><title>(%s) Search: %s </title></head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <body> <h2>Your search about %s has returned %s items :</h2><pre>'
+        % (str(len(items)),unicode(searchTerm,'utf-8'),unicode(searchTerm,'utf-8'),str(len(items))))
         counter=1
         for item in items:
-                self.response.out.write('<div>')
+                background_row_color='#E6E6E6'
+                if counter%2==0:
+                    background_row_color='#FFFFFF'
+                self.response.out.write('<div style=" height: 90px; background-color:%s ">' % background_row_color)
+                self.response.out.write('<div id=\'data\'style="float: left; text-align: right;">')
                 self.response.out.write('<h3>')
                 self.response.out.write(str(counter) + '. ')
-                self.response.out.write(item.tittle)
+                self.response.out.write('<a href=%s>%s</a>'% (item.linkToItem,item.tittle))
                 self.response.out.write('---->')
                 self.response.out.write(item.price)
                 self.response.out.write('</h3>')
-                self.response.out.write(item.image)
                 self.response.out.write('</div>')
+                self.response.out.write('<div id=\'image\'style="float: right; text-align: right;">')
+                if not item.image:
+                    item.image = 'images/vinyl_green.png'
+                self.response.out.write('<img src=%s style="width:90px; height: 90px;" ></img>' % item.image)
+                self.response.out.write('</div>')
+                self.response.out.write('</div>')
+                
                 counter=counter + 1
 
         self.response.out.write('</pre></body></html>')

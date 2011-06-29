@@ -4,7 +4,9 @@ runtime: python
 api_version: 1
 
 handlers:
-- url: /images
-  static_dir: images
-- url: .*
-  script: main.py
+  - url: /images
+    static_dir: images
+  - url: .*
+    script: main.py
+error_handlers:
+  - file: templates/default_error.html
