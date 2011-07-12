@@ -64,6 +64,6 @@ def parse_data_from_server(html_data):
             newItem.price=theItem.find('p',{'class':'precio'}).span.string.strip()
             newItem.image=theItem.find('div',{'class':'foto'}).img['src']
             newItem.fromPage="TodoColeccion"
-        list.append(newItem)
+            list.append(newItem)
     return list
 
