@@ -17,7 +17,7 @@ class Item:
     image = ""
     linkToItem = ""
     description=""
-    tittle=""
+    title=""
     fromPage=""
     price="0"
 

@@ -33,7 +33,7 @@ class MainPage(webapp.RequestHandler):
             <body>
                 <center>
                     <form action="/result" method="post">
-                        <img src="/images/logo.png" alt="Big Boat" />
+                        <img src="/images/logo.gif" alt="Big Boat" />
                         <div><h2><input name="content" maxlength="2048" type="text"/></h2></div>
                         <div><input type="submit" value="Search"></div>
                     </form>
@@ -53,7 +53,8 @@ class Searcher(webapp.RequestHandler):
             self.redirect('/')
 
     def print_results(self,items,searchTerm):
-        self.response.out.write('<html  style="background-color:#FFFFFF"> <head><title>(%s) Search: %s </title></head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <body> <h2>Your search about %s has returned %s items :</h2><pre>'
+        self.response.out.write('<html  style="background-color:#FFFFFF">' +
+        '<head><title>(%s) Search: %s </title> </head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <body> <h2>Your search about %s has returned %s items :</h2><pre>'
         % (str(len(items)),unicode(searchTerm,'utf-8'),unicode(searchTerm,'utf-8'),str(len(items))))
         counter=1
         for item in items:
@@ -64,7 +65,7 @@ class Searcher(webapp.RequestHandler):
                 self.response.out.write('<div id=\'data\'style="float: left; text-align: right;">')
                 self.response.out.write('<h3>')
                 self.response.out.write(str(counter) + '. ')
-                self.response.out.write('<a href=%s>%s</a>'% (item.linkToItem,item.tittle))
+                self.response.out.write('<a href=%s style=" width:900px;">%s</a>'% (item.linkToItem,item.title))
                 self.response.out.write('---->')
                 self.response.out.write(item.price)
                 self.response.out.write('</h3>')
@@ -78,7 +79,7 @@ class Searcher(webapp.RequestHandler):
                 
                 counter=counter + 1
 
-        self.response.out.write('</pre></body></html>')
+        self.response.out.write('</pre><script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script></body></html>')
     def verify(self,searchTerm):
         if searchTerm.strip()=='':
             return False

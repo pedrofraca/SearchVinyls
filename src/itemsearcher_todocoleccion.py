@@ -47,13 +47,23 @@ def get_data_from_server(string_to_search):
 
 def get_items(string_to_search):
     data = get_data_from_server(string_to_search)
-    soup = BeautifulSoup(''.join(data))
-    items = soup.findAll('a', {'class':'nombre'})
+    return parse_data_from_server(data)
+
+def parse_data_from_server(html_data):
+    soup = BeautifulSoup(''.join(html_data))
+    items = soup.findAll('div', {'class':'item'})
     list = []
     for theItem in items:
+        #print theItem
         newItem = Item()
-        newItem.tittle=theItem.string
-        newItem.fromPage="TodoColeccion"
+        name = theItem.find('a',{'class':'nombre'})
+        #print name
+        if name:
+            newItem.title=name['title']
+            newItem.linkToItem="http://www.todocoleccion.net"+name['href']
+            newItem.price=theItem.find('p',{'class':'precio'}).span.string.strip()
+            newItem.image=theItem.find('div',{'class':'foto'}).img['src']
+            newItem.fromPage="TodoColeccion"
         list.append(newItem)
     return list
 

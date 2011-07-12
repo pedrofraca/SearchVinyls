@@ -57,7 +57,7 @@ def get_items(string_to_search):
             newItem.image=(image['src'])
         titleSpan = cols[1].find('span',{'class':'br_item_title'})
         if titleSpan:
-            newItem.tittle = titleSpan.a.string
+            newItem.title = titleSpan.a.string
             newItem.linkToItem='http://www.discogs.com'+titleSpan.a['href']
             newItem.fromPage="Discogs"
             priceSpan = cols[4].find('span',{'class':'price'})
