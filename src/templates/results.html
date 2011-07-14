@@ -1,19 +1,45 @@
+<!--#   This file is part of SearchVinyls.
+#
+#    SearchVinyls is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    Foobar is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.-->
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<html  style="background-color:#FFFFFF">
     <head>
-        <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>({{ items_found }}) Search: {{ search_term }} </title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     </head>
     <body>
-        <div id="form">
-        <form action="/result" method="post">
-            <img src="/images/logo.png" alt="Big Boat" />
-            <div><h2><input name="content" maxlength="2048" type="text"/></h2></div>
-            <div><input type="submit" value="Search"></div>
-        </form>
-        </div>
-        <div id="results">
-
-        </div>
+        <h2>Your search about  {{ search_term }} has returned {{ items_found }} items :</h2>
+        {% for item in items %}
+            {% if forloop.counter|divisibleby:2 %}
+                <div style=" height: 90px; background-color:#FFFFFF ">
+            {% else %}
+                <div style=" height: 90px; background-color:#E6E6E6 ">
+            {% endif %}
+                    <div id="data" style="float: left; text-align: right;">
+                        <h3>
+                            <a href={{item.linkToItem}} style=" width:900px;">{{item.title}} ----> {{item.price}}</a>
+                        </h3>
+                    </div>
+                    <div id="image" style="float: right; text-align: right;">
+                    {% if item.image %}
+                        <img src={{item.image}} style="width:90px; height: 90px;" ></img>
+                    {% else %}
+                        <img src="images/vinyl_green.png" style="width:90px; height: 90px;" ></img>
+                    {% endif %}
+                    </div>
+                </div>
+        {% endfor %}
     </body>
 </html>

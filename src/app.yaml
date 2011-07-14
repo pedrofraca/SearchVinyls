@@ -8,5 +8,9 @@ handlers:
     static_dir: images
   - url: .*
     script: main.py
+  - url: /favicon.ico
+    static_files: favicon.ico
+    upload: favicon.ico
+    expiration: "1d"
 error_handlers:
   - file: templates/default_error.html
