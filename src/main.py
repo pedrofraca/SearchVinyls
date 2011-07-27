@@ -5,42 +5,60 @@
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    Foobar is distributed in the hope that it will be useful,
+#    SearchVinyls is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with SearchVinyls.  If not, see <http://www.gnu.org/licenses/>.
 
+import time
 from Search import create_search_term
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from itemsearcher import itemsearcher
 from google.appengine.ext.webapp import template
+from Counters import get_item_counter
+from Feedback import create_feedback
 import os
 #<div><textarea name="content" rows="3" cols="60"></textarea></div>
 class MainPage(webapp.RequestHandler):
     def get(self):
-        template_values = {}
+        template_values = {'items':get_item_counter()}
         path = os.path.join(os.path.dirname(__file__),'templates/main.html')
         self.response.out.write(template.render(path,template_values))
+        
+class Feedback(webapp.RequestHandler):
+    def get(self):
+        template_values = {}
+        path = os.path.join(os.path.dirname(__file__),'templates/feedback_form.html')
+        self.response.out.write(template.render(path,template_values))
+    def post(self):
+        feedback_content=self.request.get('content')
+        email=self.request.get('email')
+        create_feedback(email,feedback_content)
+        template_values = {'status':'Thank you so much for your feedbak. You will receive news about SearchVinyls.'}
+        path = os.path.join(os.path.dirname(__file__),'templates/feedback_form.html')
+        self.response.out.write(template.render(path,template_values))
+
 
 class Searcher(webapp.RequestHandler):
     def post(self):
         term_to_search=self.request.get('content')
-        term_to_search = term_to_search.encode('utf-8')
         if self.verify(term_to_search):
             create_search_term(term_to_search)
+            t0 =time.time()
             items = itemsearcher().search_items_by_string(term_to_search)
-            self.print_results(items, term_to_search)
+            self.print_results(items, term_to_search,time.time() - t0)
         else:
             self.redirect('/')
 
-    def print_results(self,items,searchTerm):
+    def print_results(self,items,searchTerm,seconds = 1):
         template_values = {
         'items_found':str(len(items)),
-        'search_term':unicode(searchTerm,'utf-8'),
+        'seconds':seconds,
+        'search_term':searchTerm,
         'items':items}
         path = os.path.join(os.path.dirname(__file__),'templates/results.html')
         self.response.out.write(template.render(path,template_values))
@@ -53,7 +71,8 @@ class Searcher(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
-                                      ('/result', Searcher)],
+                                      ('/result', Searcher),
+                                      ('/feedback', Feedback)],
                                      debug=True)
 
 def main():

@@ -1,16 +1,31 @@
 application: searchvinyls
-version: 1
+version: 2
 runtime: python
 api_version: 1
 
 handlers:
   - url: /images
     static_dir: images
-  - url: .*
+  - url: /styles
+    static_dir: styles
+  - url: /
+    script: main.py
+  - url: /result
+    script: main.py
+  - url: /feedback
     script: main.py
   - url: /favicon.ico
     static_files: favicon.ico
     upload: favicon.ico
     expiration: "1d"
+  - url: /index/cron
+    script: cron_search.py
+    login: admin
+  - url: /index/task
+    script: search_task.py
+    login: admin
+  - url: /index/index
+    script: index_task.py
+    login: admin
 error_handlers:
   - file: templates/default_error.html

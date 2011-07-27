@@ -5,17 +5,18 @@
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    Foobar is distributed in the hope that it will be useful,
+#    SearchVinyls is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+#    along with SearchVinyls.  If not, see <http://www.gnu.org/licenses/>.
+
 
 import httplib
 import urllib
-
+import logging
 import BeautifulSoup
 from BeautifulSoup import BeautifulSoup
 from item import Item
@@ -37,7 +38,7 @@ def create_headers():
 
 def get_data_from_server(string_to_search):
     h1 = httplib.HTTPConnection('www.todocoleccion.net')
-    params = urllib.urlencode({'Bu':string_to_search,'P':'1','S':130000,'M':'t','O':'r','D':'t','N':'i','wid':'4'})
+    params = urllib.urlencode({'Bu':string_to_search.encode('utf-8'),'P':'1','S':130000,'M':'t','O':'r','D':'t','N':'i','wid':'4'})
     h1.request("GET",'/buscador.cfm?'+params,None,create_headers())
     response = h1.getresponse();
     response_data = response.read()
@@ -51,19 +52,22 @@ def get_items(string_to_search):
 
 def parse_data_from_server(html_data):
     soup = BeautifulSoup(''.join(html_data))
-    items = soup.findAll('div', {'class':'item'})
     list = []
-    for theItem in items:
-        #print theItem
-        newItem = Item()
-        name = theItem.find('a',{'class':'nombre'})
-        #print name
-        if name:
-            newItem.title=name['title']
-            newItem.linkToItem="http://www.todocoleccion.net"+name['href']
-            newItem.price=theItem.find('p',{'class':'precio'}).span.string.strip()
-            newItem.image=theItem.find('div',{'class':'foto'}).img['src']
-            newItem.fromPage="TodoColeccion"
-            list.append(newItem)
+    try:
+        items = soup.findAll('div', {'class':'item'})
+        for theItem in items:
+            #print theItem
+            newItem = Item()
+            name = theItem.find('a',{'class':'nombre'})
+            #print name
+            if name:
+                newItem.title=str(name.string).decode('utf-8')
+                newItem.link="http://www.todocoleccion.net"+name['href']
+                newItem.price=theItem.find('p',{'class':'precio'}).span.string.strip()
+                newItem.image=theItem.find('div',{'class':'foto'}).img['src']
+                newItem.fromPage='TodoColeccion'
+                list.append(newItem)
+    except:
+        logging.error('Something went wrong while parsing html %s' % data)
     return list
 

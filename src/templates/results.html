@@ -20,7 +20,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     </head>
     <body>
-        <h2>Your search about  {{ search_term }} has returned {{ items_found }} items :</h2>
+        <h2>Your search about  {{ search_term }} has returned {{ items_found }} items in {{ seconds }} seconds :</h2>
         {% for item in items %}
             {% if forloop.counter|divisibleby:2 %}
                 <div style=" height: 90px; background-color:#FFFFFF ">

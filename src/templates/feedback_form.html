@@ -1,0 +1,42 @@
+<!--#   This file is part of SearchVinyls.
+#
+#    SearchVinyls is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    Foobar is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>Send Feedback</title>
+        <link rel="stylesheet" href="/styles/style.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <center>
+            <a href="../">
+                <img src="../images/logo.gif" alt="Feedback Form" />
+            </a>
+             {% if status %}
+                <div><h2>{{status}}</h2></div>
+             {% else %}
+             <h3>Hi! We are very interested in your feedback about your <strong>SearchVinyls</strong> experience. We want to know ideas, bad experiences, good experiences.... about <strong>SearchVinyls</strong>.
+                At the same time you send information using our feedback form you will be suscribed to our newsletter in order to receive news about <strong>SearchVinyls</strong> </h3>
+                <form action="../feedback" method="post">
+                    <h4>E-mail</h4>
+                    <div><h3><input name="email" style="font-size: 100%;" maxlength="2048" type="text"/></h3></div>
+                    <h4>Feedback</h4>
+                    <div><h3><textarea name="content" style="font-size: 100%;" cols="40"rows="10"></textarea></h3></div>
+                    <div><input type="submit" value="Send Feedback"></div>
+                </form>
+             {% endif %}
+        </center>
+    </body>
+</html>

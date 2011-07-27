@@ -1,0 +1,6 @@
+cron:
+  - description: Generating indexs
+    url: /index/cron
+    schedule: every 10 hours
+    timezone: Europe/Madrid
+    target : 2

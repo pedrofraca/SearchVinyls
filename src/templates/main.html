@@ -16,6 +16,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <TITLE>Search for Vinyls</TITLE>
+        <link rel="stylesheet" href="/styles/style.css">
         <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
         <script type="text/javascript">
             function f() {
@@ -26,10 +27,12 @@
         <center>
             <form action="/result" method="post">
                 <img src="/images/logo.gif" alt="Search for Vinyls" />
-                <div><h2><input name="content" maxlength="2048" type="text"/></h2></div>
+                <h4>{{items}} vinyls indexed </h4>
+                <div><h2><input name="content" size="40" style="font-size: 100%;" maxlength="2048" type="text"/></h2></div>
                 <div><input type="submit" value="Search"></div>
             </form>
             <div style="margin-left: 35px;"><g:plusone size="medium"></g:plusone></div>
+            <div style="margin-top: 20px"><a href="/feedback">Feedback</a></div>
         </center>
     </body>
 </html>
