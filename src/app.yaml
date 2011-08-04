@@ -27,5 +27,8 @@ handlers:
   - url: /index/index
     script: index_task.py
     login: admin
+  - url: /mapreduce(/.*)?
+    script: mapreduce/main.py
+    login: admin
 error_handlers:
   - file: templates/default_error.html

@@ -15,6 +15,9 @@
 
 import string
 import base64
+import copy
+import logging
+from item import Item
 class normalizator():
     def remove_words_in_list(self,words_to_remove,list):
         for word in list:
@@ -34,3 +37,15 @@ class normalizator():
             phrase += word
             phrase_encoded = base64.b64encode(phrase.encode('utf-8'))
         return phrase_encoded
+def expand_items(list_to_expand):
+    list_to_return = []
+    logging.info(list_to_expand)
+    for item in list_to_expand:
+        if item.links_list:
+            if len(item.links_list)>0:
+                for link in item.links_list:
+                    new_item = copy.deepcopy(item)
+                    new_item.link = link
+                    new_item.price = item.price_list[item.links_list.index(link)]
+                    list_to_return.append(new_item)
+    return list_to_return

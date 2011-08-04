@@ -14,7 +14,7 @@
 #    along with SearchVinyls.  If not, see <http://www.gnu.org/licenses/>.
 
 from google.appengine.ext import db
-
+from Counters import increase_item_counter
 
 class Item(db.Model):
     image = db.LinkProperty()
@@ -22,24 +22,25 @@ class Item(db.Model):
     description = db.StringProperty()
     title = db.StringProperty()
     fromPage = db.StringProperty()
-    price=db.StringProperty()
+    price_list=db.StringListProperty()
     link=""
+    price=""
 
 
 def create_item(item_to_insert,key):
     item_db_key = db.Key.from_path("Item", key)
     item_object = db.get(item_db_key)
     if item_object:
-        if not(item_object.link in item_object.links_list):
+        if not(db.Link(item_to_insert.link) in item_object.links_list):
             item_object.links_list.append(db.Link(item_to_insert.link))
+            item_object.price_list.append(item_to_insert.price)
+            increase_item_counter()
     else:
         item_object = Item(key_name=key,links_list = [db.Link(item_to_insert.link)],
                             image=item_to_insert.image,
                             description = item_to_insert.description,
                             fromPage = item_to_insert.fromPage,
-                            price = item_to_insert.price,
+                            price_list = [item_to_insert.price],
                             title = item_to_insert.title)
-
+        increase_item_counter()
     return item_object
-
-

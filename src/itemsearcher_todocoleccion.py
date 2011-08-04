@@ -56,10 +56,9 @@ def parse_data_from_server(html_data):
     try:
         items = soup.findAll('div', {'class':'item'})
         for theItem in items:
-            #print theItem
             newItem = Item()
             name = theItem.find('a',{'class':'nombre'})
-            #print name
+            
             if name:
                 newItem.title=str(name.string).decode('utf-8')
                 newItem.link="http://www.todocoleccion.net"+name['href']

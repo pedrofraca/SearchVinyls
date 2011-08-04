@@ -16,30 +16,33 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html  style="background-color:#FFFFFF">
     <head>
+         <link rel="stylesheet" href="/styles/style.css">
         <title>({{ items_found }}) Search: {{ search_term }} </title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     </head>
     <body>
-        <h2>Your search about  {{ search_term }} has returned {{ items_found }} items in {{ seconds }} seconds :</h2>
-        {% for item in items %}
-            {% if forloop.counter|divisibleby:2 %}
-                <div style=" height: 90px; background-color:#FFFFFF ">
-            {% else %}
-                <div style=" height: 90px; background-color:#E6E6E6 ">
-            {% endif %}
-                    <div id="data" style="float: left; text-align: right;">
-                        <h3>
-                            <a href={{item.linkToItem}} style=" width:900px;">{{item.title}} ----> {{item.price}}</a>
-                        </h3>
-                    </div>
-                    <div id="image" style="float: right; text-align: right;">
-                    {% if item.image %}
-                        <img src={{item.image}} style="width:90px; height: 90px;" ></img>
-                    {% else %}
-                        <img src="images/vinyl_green.png" style="width:90px; height: 90px;" ></img>
-                    {% endif %}
-                    </div>
-                </div>
-        {% endfor %}
+        <center>
+            <br>
+            <h2>Your search about  {{ search_term }} has returned {{ items_found }} items in {{ seconds }} seconds :</h2>
+            <br>
+            <table>
+                <tbody>
+                    {% for item in items %}
+                    <tr class="posts-table">
+                        <td >
+                                <a class="title"href={{item.link}}>{{item.title}} ----> {{item.price}}</a>
+                        </td>
+                        <td class="image" id="image" style="float: right; text-align: right;">
+                            {% if item.image %}
+                            <img src={{item.image}} href={{item.link}} style="width:90px; height: 90px;" ></img>
+                            {% else %}
+                            <img src="images/vinyl_green.png" href={{item.link}} style="width:90px; height: 90px;" ></img>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+            </table>
+        </center>
     </body>
 </html>

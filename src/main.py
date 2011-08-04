@@ -44,8 +44,8 @@ class Feedback(webapp.RequestHandler):
 
 
 class Searcher(webapp.RequestHandler):
-    def post(self):
-        term_to_search=self.request.get('content')
+    def get(self):
+        term_to_search=self.request.get('c')
         if self.verify(term_to_search):
             create_search_term(term_to_search)
             t0 =time.time()
