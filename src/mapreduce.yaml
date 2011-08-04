@@ -1,0 +1,15 @@
+mapreduce:
+- name: Delete Indexes
+  mapper:
+    input_reader: mapreduce.input_readers.DatastoreInputReader
+    handler: mapreduce_delete_index.process
+    params:
+    - name: entity_kind
+      default: Index.Index
+- name: Delete Items
+  mapper:
+    input_reader: mapreduce.input_readers.DatastoreInputReader
+    handler: mapreduce_delete_item.process
+    params:
+    - name: entity_kind
+      default: item.Item
