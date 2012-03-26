@@ -14,6 +14,7 @@
 #    along with SearchVinyls.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
+import datetime
 from Search import create_search_term
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -22,7 +23,8 @@ from google.appengine.ext.webapp import template
 from Counters import get_item_counter
 from Feedback import create_feedback
 import os
-#<div><textarea name="content" rows="3" cols="60"></textarea></div>
+import PyRSS2Gen
+
 class MainPage(webapp.RequestHandler):
     def get(self):
         template_values = {'items':get_item_counter()}
@@ -46,11 +48,18 @@ class Feedback(webapp.RequestHandler):
 class Searcher(webapp.RequestHandler):
     def get(self):
         term_to_search=self.request.get('c')
+        format_=self.request.get('f')
         if self.verify(term_to_search):
             create_search_term(term_to_search)
             t0 =time.time()
             items = itemsearcher().search_items_by_string(term_to_search)
-            self.print_results(items, term_to_search,time.time() - t0)
+            if format_:
+                if format_=='rss':
+                    self.print_results_as_rss(items, term_to_search,time.time() - t0)
+                else:
+                    self.print_results(items, term_to_search,time.time() - t0)
+            else:
+                self.print_results(items, term_to_search,time.time() - t0)
         else:
             self.redirect('/')
 
@@ -62,7 +71,20 @@ class Searcher(webapp.RequestHandler):
         'items':items}
         path = os.path.join(os.path.dirname(__file__),'templates/results.html')
         self.response.out.write(template.render(path,template_values))
+    
 
+    def print_results_as_rss(self,items,searchTerm,seconds=1):
+        rss_items = []
+        for item in items:
+            rss_items.append(PyRSS2Gen.RSSItem(title=item.title,
+                                               link=item.link,
+                                               description=item.as_html(),
+                                               guid = PyRSS2Gen.Guid(item.image),
+                                               pubDate = datetime.datetime.now()))
+        
+        rss = PyRSS2Gen.RSS2(title=searchTerm,link="http://sviniyls.com",description="returned in seconds",items=rss_items)
+
+        self.response.out.write(rss.to_xml())
         
     def verify(self,searchTerm):
         if searchTerm.strip()=='':

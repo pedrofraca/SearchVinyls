@@ -25,7 +25,9 @@ class Item(db.Model):
     price_list=db.StringListProperty()
     link=""
     price=""
-
+    
+    def as_html(self):
+        return '<div>'+ self.title +' <strong>' + self.price_list[0] +'</strong></div><img src='+ self.image+' style="width:90px; height: 90px;" ></img>'
 
 def create_item(item_to_insert,key):
     item_db_key = db.Key.from_path("Item", key)
