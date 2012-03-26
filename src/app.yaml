@@ -21,6 +21,9 @@ handlers:
   - url: /index/cron
     script: cron_search.py
     login: admin
+  - url: /robots.txt
+    static_files: robots.txt
+    upload: robots.txt
   - url: /index/task
     script: search_task.py
     login: admin
