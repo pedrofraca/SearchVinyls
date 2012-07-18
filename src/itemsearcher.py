@@ -16,7 +16,7 @@
 import itemsearcher_discogs
 import itemsearcher_todocoleccion
 
-from Index import get_items_by_search_term
+from Index import get_items_by_search_term, index_item_and_store_item
 from normalizator import normalizator
 from google.appengine.api import memcache
 from google.appengine.api import taskqueue
@@ -26,8 +26,17 @@ class itemsearcher:
         text_normalized = normalizator().normalize(text)
         all_items = get_items_by_search_term(text_normalized)
         if len(all_items)<10:
-            all_items = self.get_data_from_server_and_index_it(text)
+            self.get_data_from_server_and_store_it(text)
+            all_items = get_items_by_search_term(text_normalized)
         return all_items
+
+    def get_data_from_server_and_store_it(self,text):
+            items_discogs = itemsearcher_discogs.get_items(text)
+            items_todo_coleccion = itemsearcher_todocoleccion.get_items(text)
+            all_items = items_discogs + items_todo_coleccion
+            for item in all_items:
+                index_item_and_store_item(item)
+            
     def get_data_from_server_and_index_it(self,text):
             items_discogs = itemsearcher_discogs.get_items(text)
             items_todo_coleccion = itemsearcher_todocoleccion.get_items(text)

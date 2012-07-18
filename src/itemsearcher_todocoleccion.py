@@ -48,7 +48,9 @@ def get_data_from_server(string_to_search):
 
 def get_items(string_to_search):
     data = get_data_from_server(string_to_search)
-    return parse_data_from_server(data)
+    if data:
+        return parse_data_from_server(data)
+    return []
 
 def parse_data_from_server(html_data):
     soup = BeautifulSoup(''.join(html_data))
