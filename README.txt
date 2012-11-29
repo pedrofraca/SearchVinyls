@@ -11,5 +11,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+This software will help to the community to search vinyls easily. We have created a sistem to index all the data prividing a fast way to get results. 
+
 Contact information:
 Pedro Fraca Tarancón <pedro.fraca@gmail.com>
