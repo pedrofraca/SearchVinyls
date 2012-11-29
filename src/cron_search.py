@@ -13,20 +13,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with SearchVinyls.  If not, see <http://www.gnu.org/licenses/>.
 
-from google.appengine.ext import webapp
-from Search import generate_tasks_for_all_search_terms
-from google.appengine.ext.webapp.util import run_wsgi_app
 
-class CronTaskHandler(webapp.RequestHandler):
+from Search import generate_tasks_for_all_search_terms
+import webapp2
+
+class CronTaskHandler(webapp2.RequestHandler):
     def get(self):
         generate_tasks_for_all_search_terms()
         
-application = webapp.WSGIApplication(
-                                     [('/index/cron', CronTaskHandler)],
+app = webapp2.WSGIApplication([('/index/cron', CronTaskHandler)],
                                      debug=True)
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()

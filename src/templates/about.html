@@ -1,0 +1,26 @@
+<!--#   This file is part of SearchVinyls.
+    #
+    #    SearchVinyls is free software: you can redistribute it and/or modify
+    #    it under the terms of the GNU General Public License as published by
+    #    the Free Software Foundation, either version 3 of the License, or
+    #    (at your option) any later version.
+    #
+    #    Foobar is distributed in the hope that it will be useful,
+    #    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    #    GNU General Public License for more details.
+    #
+    #    You should have received a copy of the GNU General Public License
+    #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.-->
+{% extends "base.html" %}
+{% block menu %}
+<ul class="nav nav-pills pull-right">
+  <li><a href="/">Home</a></li>
+  <li class="active"><a href="/about">About</a></li>
+  <li><a href="/contact">Contact</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<p class="text-info">SearchVinyls is built with the purpose of make easy search vinyls across the web. Right now a lot of pages offers this posibility, but no one with the easy way of use like SearchVinyls. On the top of that, SearchVinyls search and index viniyls from various web pages.</p>
+<p class="text-info">Was developed by Pedro Fraca, and the source code was under GNUv3 License. You can browse the code in <a href="https://github.com/pedrofraca/searchvinyls">github.</a></p>
+{% endblock %}

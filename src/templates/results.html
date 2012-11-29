@@ -1,48 +1,61 @@
 <!--#   This file is part of SearchVinyls.
-#
-#    SearchVinyls is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    Foobar is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.-->
+    #
+    #    SearchVinyls is free software: you can redistribute it and/or modify
+    #    it under the terms of the GNU General Public License as published by
+    #    the Free Software Foundation, either version 3 of the License, or
+    #    (at your option) any later version.
+    #
+    #    Foobar is distributed in the hope that it will be useful,
+    #    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    #    GNU General Public License for more details.
+    #
+    #    You should have received a copy of the GNU General Public License
+    #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.-->
+{% extends "base.html" %}
+{% block menu %}
+<ul class="nav nav-pills pull-right">
+  <li><a href="/">Home</a></li>
+  <li><a href="/about">About</a></li>
+  <li><a href="/contact">Contact</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="span12">
+    <div class="alert alert-info">
+      Your search about <strong> {{ search_term }} </strong> has returned {{ items_found }} items in {{ seconds }} seconds :
+    </div>
+  </div>
+</div>
+<table class="span12 table table-striped">
+<tbody>
+{% for item in items %}
+<tr>
+  <td>
+    {% if item.price %}
+       <a href={{item.link}}>{{item.title}} ----> {{item.price}}</a>
+    {% else %}
+       <a href={{item.link}}>{{item.title}} ----> ???</a>
+    {% endif %}
+</td>
+  <td>
+  {% if item.image %}
+  <img src={{item.image}} href={{item.link}} class="img-polaroid" style="width:100px;height:100px;"></img>
+  {% else %}
+  <img src="images/vinyl_green.png" href={{item.link}} class="img-polaroid"></img>
+  {% endif %}
+  </td>
+</tr>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html  style="background-color:#FFFFFF">
-    <head>
-         <link rel="stylesheet" href="/styles/style.css">
-        <title>({{ items_found }}) Search: {{ search_term }} </title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    </head>
-    <body>
-        <center>
-            <br>
-            <h2>Your search about  {{ search_term }} has returned {{ items_found }} items in {{ seconds }} seconds :</h2>
-            <br>
-            <table>
-                <tbody>
-                    {% for item in items %}
-                    <tr class="posts-table">
-                        <td >
-                                <a class="title"href={{item.link}}>{{item.title}} ----> {{item.price}}</a>
-                        </td>
-                        <td class="image" id="image" style="float: right; text-align: right;">
-                            {% if item.image %}
-                            <img src={{item.image}} href={{item.link}} style="width:90px; height: 90px;" ></img>
-                            {% else %}
-                            <img src="images/vinyl_green.png" href={{item.link}} style="width:90px; height: 90px;" ></img>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-            </table>
-        </center>
-    </body>
-</html>
+{% endfor %}
+</tbody>
+</table>
+<div class="pagination pagination-centered">
+  <ul>
+    {% for page in pages %}
+    <li><a href="/result?c={{ search_term }}&p={{ page }}">{{ page }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

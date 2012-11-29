@@ -17,14 +17,17 @@ from google.appengine.ext import db
 from google.appengine.api import mail
 
 class Feedback(db.Model):
-    email = db.StringProperty()
+    email = db.EmailProperty()
     feedback = db.StringProperty(multiline=True)
     created = db.DateTimeProperty(auto_now_add=True)
 
 def create_feedback(email,feedback):
-    feedback_object = Feedback(email=email,feedback=feedback)
-    feedback_object.put()
-    mail.send_mail(sender="Pedro Fraca <pedro.fraca@gmail.com>",
-              to="<pedro.fraca@gmail.com>",
-              subject="Feedback from searchvinyls",
-              body=" A new feedback message from " + email +" has been created :" + feedback)
+    try:
+        feedback_object = Feedback(email=email,feedback=feedback)
+        feedback_object.put()
+        mail.send_mail(sender="Pedro Fraca <pedro.fraca@gmail.com>",
+        to="<pedro.fraca@gmail.com>",
+        subject="Feedback from searchvinyls",
+        body=" A new feedback message from " + email +" has been created :" + feedback)
+    except:
+        return "Please insert a valid e=mail"

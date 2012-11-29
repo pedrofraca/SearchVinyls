@@ -17,8 +17,8 @@
 import httplib
 import urllib
 import logging
-import BeautifulSoup
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
+import html5lib
 from item import Item
           # For processing HTML
 
@@ -53,22 +53,26 @@ def get_items(string_to_search):
     return []
 
 def parse_data_from_server(html_data):
-    soup = BeautifulSoup(''.join(html_data))
+    soup = BeautifulSoup(html_data)
     list = []
-    try:
-        items = soup.findAll('div', {'class':'item'})
-        for theItem in items:
-            newItem = Item()
-            name = theItem.find('a',{'class':'nombre'})
-            
-            if name:
-                newItem.title=str(name.string).decode('utf-8')
-                newItem.link="http://www.todocoleccion.net"+name['href']
-                newItem.price=theItem.find('p',{'class':'precio'}).span.string.strip()
-                newItem.image=theItem.find('div',{'class':'foto'}).img['src']
-                newItem.fromPage='TodoColeccion'
-                list.append(newItem)
-    except:
-        logging.error('Something went wrong while parsing html %s' % data)
+    items = soup.findAll('div', {'class':'item'})
+    for theItem in items:
+        newItem = Item()
+        name = theItem.find('a',{'class':'nombre sin_subrayar'})
+        if name:
+            newItem.title=unicode(name.string)
+            newItem.price=''#get_price(theItem)
+            newItem.link="http://www.todocoleccion.net"+name['href']
+            newItem.image=theItem.find('div',{'class':'foto'}).img['src']
+            newItem.fromPage='TodoColeccion'
+            list.append(newItem)
     return list
 
+def get_price(item):
+    price=item.find('p',{'class':'precio'})
+    precio_directa = price.find('span',{'class':'precio_directa'})
+    if precio_directa:
+        logging.info("Precio" + unicode(precio_directa.string))
+        logging.info("Precio" + unicode(price.span.span.string))
+        logging.info("Precio" + unicode(price.span.string))
+    return precio_directa

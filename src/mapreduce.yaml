@@ -13,3 +13,10 @@ mapreduce:
     params:
     - name: entity_kind
       default: item.Item
+- name: Populate NumItems
+  mapper:
+    input_reader: mapreduce.input_readers.DatastoreInputReader
+    handler: mapreduce_populate_items.process
+    params:
+    - name: entity_kind
+      default: Index.Index

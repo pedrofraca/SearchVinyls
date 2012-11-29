@@ -1,0 +1,61 @@
+<!--#   This file is part of SearchVinyls.
+    #
+    #    SearchVinyls is free software: you can redistribute it and/or modify
+    #    it under the terms of the GNU General Public License as published by
+    #    the Free Software Foundation, either version 3 of the License, or
+    #    (at your option) any later version.
+    #
+    #    Foobar is distributed in the hope that it will be useful,
+    #    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    #    GNU General Public License for more details.
+    #
+    #    You should have received a copy of the GNU General Public License
+    #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <TITLE>Search for Vinyls</TITLE>
+    <link href="/scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles/style.css" rel="stylesheet">
+    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/scripts/bootstrap/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div id="wrap">
+      <!-- Begin page content -->
+      <div class="container">
+	<div class="navbar" style="margin-top:20px;">
+	  <div class="navbar-inner">
+	    <img class="brand" src="/images/icon.png" alt="some_text">
+	    <ul class="nav">
+	      <li class="active"><a href="/">Home</a></li>
+	      <!-- <li><a href="#">Bands</a></li> -->
+	      <li><a href="/about">About Us</a></li>
+	      <form action="/result" method="get" class="navbar-search ">
+		<input id="data" name="c" type="text" class="search-query"  placeholder="Search" style="height:30px;">
+	      </form>
+	    </ul>
+	  </div>
+	</div>
+	{% block content %}
+	{% endblock %}
+      </div>
+      <div id="push"></div>
+    </div>
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Developed by Pedro Fraca - Give Us <a href="/feedback">Feedback</a> <img src="/images/icon.png" alt="some_text"></p>
+      </div>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    $('#data').typeahead({source:["Los planetas","Los Punsetes"]});
+  </script>
+</html>

@@ -17,8 +17,7 @@ import httplib
 from pydoc import deque
 import urllib
 import logging
-import BeautifulSoup
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 from item import Item
 
 __author__="pfraca"
@@ -44,27 +43,25 @@ def get_items(string_to_search):
     data = get_data_from_server(string_to_search)
     soup = BeautifulSoup(''.join(data))
     list = []
-    try:
-        table = soup.find('table',{'class':'mpitems'})
-        rows = deque(table.findAll('tr'))
-        rows.popleft()
 
-        for theItem in rows:
-            cols = theItem.findAll('td',recursive=False)
-            newItem = Item()
-            image = cols[0].find('img')
-            if image:
-                newItem.image=(image['src'])
+    table = soup.find('table',{'class':'mpitems'})
+    rows = deque(table.findAll('tr'))
+    rows.popleft()
+    
+    for theItem in rows:
+        cols = theItem.findAll('td',recursive=False)
+        newItem = Item()
+        image = cols[0].find('img')
+        if image:
+            newItem.image=(image['src'])
             titleSpan = cols[1].find('span',{'class':'br_item_title'})
             if titleSpan:
-                newItem.title = str(titleSpan.a.string).decode('utf-8')
+                newItem.title = unicode(titleSpan.a.string)
                 newItem.link='http://www.discogs.com'+titleSpan.a['href']
                 newItem.fromPage='Discogs'
                 priceSpan = cols[4].find('span',{'class':'price'})
                 if priceSpan:
-                    newItem.price=str(priceSpan.string)
+                    newItem.price=unicode(priceSpan.string)
                 list.append(newItem)
-    except:
-        logging.error('Something went wrong while parsing html %s' % data)
     return list
 

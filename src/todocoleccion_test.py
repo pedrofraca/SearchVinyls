@@ -19,9 +19,6 @@ from itemsearcher_todocoleccion import parse_data_from_server
 
 class Todocoleccion_TestCase(unittest.TestCase):
     string_to_parse = ""
-    #def tearDown(self):
-    #    self.foo.dispose()
-    #    self.foo = None
 
     def test_todocoleccion_(self):
         f = open('src/todocoleccion.html')

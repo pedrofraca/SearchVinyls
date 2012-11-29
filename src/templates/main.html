@@ -1,38 +1,53 @@
 <!--#   This file is part of SearchVinyls.
-#
-#    SearchVinyls is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    Foobar is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.-->
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <TITLE>Search for Vinyls</TITLE>
-        <link rel="stylesheet" href="/styles/style.css">
-        <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
-
-    </head>
-    <body>
-        <center>
-            <form action="/result" method="get">
-                <img src="/images/logo.gif" alt="Search for Vinyls" />
-                <h4>{{items}} vinyls indexed </h4>
-                <div><h2><input id="data" name="c" size="40" style="font-size: 100%;" maxlength="2048" type="text"/></h2></div>
-                <div><input type="submit" value="Search"></div>
-            </form>
-            <div style="margin-left: 35px;"><g:plusone size="medium"></g:plusone></div>
-            <div style="margin-top: 20px"><a href="/feedback">Feedback</a></div>
-        </center>
-    </body>
-    <script type="text/javascript">
-        document.getElementById("data").focus();
-    </script>
-</html>
+    #
+    #    SearchVinyls is free software: you can redistribute it and/or modify
+    #    it under the terms of the GNU General Public License as published by
+    #    the Free Software Foundation, either version 3 of the License, or
+    #    (at your option) any later version.
+    #
+    #    Foobar is distributed in the hope that it will be useful,
+    #    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    #    GNU General Public License for more details.
+    #
+    #    You should have received a copy of the GNU General Public License
+    #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+{% extends "base.html" %}
+{% block menu %}
+<ul class="nav nav-pills pull-right">
+  <li class="active"><a href="/">Home</a></li>
+  <li><a href="/about">About</a></li>
+  <li><a href="/contact">Contact</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<div class="jumbotron">
+  <h1>Search, Buy & Listen</h1>
+  <p class="lead">Our database is infected with thousands of vinyls ready to be searched.</p>
+  <div style="width:50%;margin:auto">
+    <form action="/result" method="get" class="navbar-search ">
+      <input id="data" name="c" type="text" class="input-large search-query"  placeholder="Search" style="height:30px; font-size:20px;">
+      <button type="submit" class="btn btn-large btn-primary" style="padding: 8px 24px;">Search</button>
+    </form>
+  </div>
+</div>
+<br>
+<hr>
+<div class="row-fluid marketing">
+  <div class="span6">
+    <div><h1>Vinyls Indexed</h1></div>
+    <div><h4>{{ items }}</h4></div>
+  </div>
+  <div class="span6">
+    <div>
+      <h1>Most Wanted</h1>
+      <ul>
+	{% for item in most_searched %}
+	<a href="/result?c={{item.searchterm}}"><li>{{item.searchterm}}</li></a>
+	{% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
